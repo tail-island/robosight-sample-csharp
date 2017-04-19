@@ -36,7 +36,8 @@ namespace Robosight
         private Action ThinkAction(Tank friend, List<Tank> friends, List<Tank> enemies)
         {
             // HPがないと何もできないので、何もしません。
-            if (friend.HP <= 0.0) {
+            if (friend.HP <= 0.0)
+            {
                 return null;
             }
 
@@ -44,10 +45,12 @@ namespace Robosight
             var targetEnemy = enemies.Where(enemy => enemy.HP > 0.0).Aggregate((acc, enemy) => enemy.HP < acc.HP ? enemy : acc);
 
             // 砲撃できる場合は、砲撃します。
-            if (friend.CanShootAfter < 2) {
+            if (friend.CanShootAfter < 2)
+            {
                 // まずは向き変え。
                 var targetEnemyAngle = Angle(Sub(targetEnemy.Center, friend.Center));
-                if (Math.Abs(targetEnemyAngle - friend.Direction) > Math.PI * 5 / 180) {
+                if (Math.Abs(targetEnemyAngle - friend.Direction) > Math.PI * 5 / 180)
+                {
                     return new Action() { Function = "turn-to", Parameter = targetEnemyAngle };
                 }
 
@@ -62,8 +65,10 @@ namespace Robosight
             Console.Error.WriteLine(string.Format("{0}: speed = {1:0.00}", friend.Name, speed));
 
             // 速度が遅い場合は、乱数回避機動。。。(*^^*)
-            if (speed < 5.0) {
-                if (random.NextDouble() < 0.2) {
+            if (speed < 5.0)
+            {
+                if (random.NextDouble() < 0.2)
+                {
                     // 適当に回転。
                     return new Action() { Function = "turn-to", Parameter = random.NextDouble() * Math.PI * 2 };
                 }
